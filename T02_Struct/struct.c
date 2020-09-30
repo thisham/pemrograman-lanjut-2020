@@ -4,7 +4,7 @@
 /*
  * Hamdan Yuwafi Mastu Wijaya (NPM. 19081010092)
  * Judul        : Sistem Persediaan Bahan dalam Lemari Gudang
- * GitHub URL   : 
+ * GitHub URL   : https://github.com/thisham/pemrograman-lanjut-2020/tree/master/T02_Struct
  * Note         : Source code ini ditulis di Linux Ubuntu 18.04 dan dikompilasi dengan GCC for Linux.
  */
 
