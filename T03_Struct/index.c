@@ -15,12 +15,12 @@ struct Mahasiswa
 };
 
 void act_create();
-// void act_read();
+void act_read();
 // int act_update();
 // int act_delete();
 
 void data_create();
-// void data_read();
+void data_read();
 // void data_update();
 // void data_delete();
 
@@ -41,10 +41,10 @@ int main()
         switch (pilih)
         {
             case 1: data_create(); break;
-            // case 'B': data_read(); break;
+            case 2: data_read(); break;
             // case 'C': data_update(); break;
             // case 'D': data_delete(); break;
-            case 5: exit; break;
+            case 5: exit(1); break;
             
             default:
                 printf("\nPilihan tak ditemukan!\n");
@@ -71,7 +71,7 @@ int main()
         printf("Usia     : "); scanf("%i", &mhs.usia);
         
         act_create(mhs);
-        printf("Data berhasil ditambahkan!\n");
+        printf("\nData berhasil ditambahkan!\n");
         printf("==============================================\n\n");
         
     }
@@ -102,4 +102,93 @@ int main()
         sqlite3_step(final_query);
     }
 
+
 // READ MODULES
+
+    void data_read() {
+        int i;
+        char npm[16];
+
+        printf("Opsi:\n");
+        printf("    [1] Semua Data\n");
+        printf("    [2] Berdasarkan NPM\n");
+        printf("\nPilihan Anda : "); scanf("%i", &i);
+        printf("==============================================\n\n");
+
+        switch (i)
+        {
+        case 1:
+            act_read("all");
+            break;
+
+        case 2:
+            printf("Masukkan NPM : "); scanf("%s", npm);
+            printf("==============================================\n\n");
+            act_read(npm);
+            break;
+        
+        default:
+            printf("Pilihan tidak tersedia!\n");
+            break;
+        }
+
+        printf("==============================================\n\n");
+    }
+
+    void act_read(char npm[16]) {
+        sqlite3 *db;
+        sqlite3_stmt *final_query;
+        char *err_msg = 0;
+        int i = 1;
+
+        int rc = sqlite3_open("db_mhs.db", &db);
+
+        if (rc != SQLITE_OK)
+        {
+            fprintf(stderr, "Can\'t load database: %s", sqlite3_errmsg(db));
+            sqlite3_close(db);
+        }
+
+        if (npm == "all")
+        {
+            char *sql = "SELECT * FROM Mahasiswa";
+            sqlite3_prepare_v2(db, sql, strlen(sql), &final_query, NULL);
+            while (sqlite3_step(final_query) == SQLITE_ROW) {
+                printf("Data ke-%i:\n", i++);
+                printf("\tNPM\t\t: %s\n", sqlite3_column_text(final_query, 0));
+                printf("\tNama\t\t: %s\n", sqlite3_column_text(final_query, 1));
+                printf("\tAngkatan\t: %i\n", sqlite3_column_int(final_query, 2));
+                printf("\tJurusan\t\t: %s\n", sqlite3_column_text(final_query, 3));
+                printf("\tFakultas\t: %s\n", sqlite3_column_text(final_query, 4));
+                printf("\tSemester\t: %i\n", sqlite3_column_int(final_query, 5));
+                printf("\tUsia\t\t: %i tahun\n\n", sqlite3_column_int(final_query, 6));
+            }
+            // printf("%16s|%32s|%8s|%32s|%32s|%8s|%4s\n", "NPM", "Nama", "Angkatan", "Jurusan", "Fakultas", "Semester", "Usia");
+            // printf("----------------+--------------------------------+--------+--------------------------------+--------------------------------+--------+----\n");
+            // while (sqlite3_step(final_query) == SQLITE_ROW) {
+            //     printf("%16s|%32s|%8i|%32s|%32s|%8i|%4i\n", sqlite3_column_text(final_query, 0), sqlite3_column_text(final_query, 1), sqlite3_column_int(final_query, 2), sqlite3_column_text(final_query, 3), sqlite3_column_text(final_query, 4), sqlite3_column_int(final_query, 5), sqlite3_column_int(final_query, 6));
+            // }
+        }
+        else
+        {
+            char *sql = "SELECT * FROM Mahasiswa WHERE npm = :npm";
+            sqlite3_prepare_v2(db, sql, strlen(sql), &final_query, NULL);
+            sqlite3_bind_text(final_query, 1, npm, strlen(npm), NULL);
+            while (sqlite3_step(final_query) == SQLITE_ROW) {
+                printf("Data ke-%i:\n", i++);
+                printf("\tNPM\t\t: %s\n", sqlite3_column_text(final_query, 0));
+                printf("\tNama\t\t: %s\n", sqlite3_column_text(final_query, 1));
+                printf("\tAngkatan\t: %i\n", sqlite3_column_int(final_query, 2));
+                printf("\tJurusan\t\t: %s\n", sqlite3_column_text(final_query, 3));
+                printf("\tFakultas\t: %s\n", sqlite3_column_text(final_query, 4));
+                printf("\tSemester\t: %i\n", sqlite3_column_int(final_query, 5));
+                printf("\tUsia\t\t: %i tahun\n\n", sqlite3_column_int(final_query, 6));
+            }
+            // printf("%16s|%32s|%8s|%32s|%32s|%8s|%4s\n", "NPM", "Nama", "Angkatan", "Jurusan", "Fakultas", "Semester", "Usia");
+            // printf("----------------+--------------------------------+--------+--------------------------------+--------------------------------+--------+----\n");
+            // while (sqlite3_step(final_query) == SQLITE_ROW) {
+            //     printf("%16s|%32s|%8i|%32s|%32s|%8i|%4i\n", sqlite3_column_text(final_query, 0), sqlite3_column_text(final_query, 1), sqlite3_column_int(final_query, 2), sqlite3_column_text(final_query, 3), sqlite3_column_text(final_query, 4), sqlite3_column_int(final_query, 5), sqlite3_column_int(final_query, 6));
+            // }
+        }
+        
+    }
