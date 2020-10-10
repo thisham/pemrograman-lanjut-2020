@@ -239,25 +239,26 @@ int main()
             sqlite3_close(db);
         }
 
-        char *sql = "UPDATE Mahasiswa SET nama = :a, angkatan = :b, jurusan = :c, fakultas = :d, semester = :e, usia = :f WHERE npm = :g";
+        char *sql = "UPDATE Mahasiswa SET nama = :nama, angkatan = :angkatan, jurusan = :jurusan, fakultas = :fakultas, semester = :semester, usia = :usia WHERE npm = :npm";
         sqlite3_prepare_v2(db, sql, strlen(sql), &final_query, NULL);
-        sqlite3_bind_text(final_query, 0, mhs.nama, strlen(mhs.nama), NULL);
-        sqlite3_bind_int(final_query, 1, mhs.angkatan);
-        sqlite3_bind_text(final_query, 2, mhs.jurusan, strlen(mhs.jurusan), NULL);
-        sqlite3_bind_text(final_query, 3, mhs.fakultas, strlen(mhs.fakultas), NULL);
-        sqlite3_bind_int(final_query, 4, mhs.semester);
-        sqlite3_bind_int(final_query, 5, mhs.usia);
-        sqlite3_bind_text(final_query, 6, mhs.npm, strlen(mhs.npm), NULL);
-        // sqlite3_step(final_query);
+        sqlite3_bind_text(final_query, 1, mhs.nama, strlen(mhs.nama), NULL);
+        sqlite3_bind_int(final_query, 2, mhs.angkatan);
+        sqlite3_bind_text(final_query, 3, mhs.jurusan, strlen(mhs.jurusan), NULL);
+        sqlite3_bind_text(final_query, 4, mhs.fakultas, strlen(mhs.fakultas), NULL);
+        sqlite3_bind_int(final_query, 5, mhs.semester);
+        sqlite3_bind_int(final_query, 6, mhs.usia);
+        sqlite3_bind_text(final_query, 7, mhs.npm, strlen(mhs.npm), NULL);
+        // printf("%s\n",sqlite3_expanded_sql(final_query));
+        sqlite3_step(final_query);
         // sqlite3_finalize(final_query);
-        rc = sqlite3_exec(db, sql, callback, "Callback Called", &err_msg);
+        // rc = sqlite3_exec(db, sql, callback, "Callback Called", &err_msg);
         
 
-        if (rc != SQLITE_OK)
-        {
-            printf("SQLite Error: %s\n", err_msg);
-            sqlite3_free(err_msg);
-        }
+        // if (rc != SQLITE_OK)
+        // {
+        //     printf("SQLite Error: %s\n", err_msg);
+        //     sqlite3_free(err_msg);
+        // }
         
 
         /* if (npm == "all")
