@@ -3,6 +3,13 @@
 #include <stdlib.h>
 #include <sqlite3.h>
 
+/**
+ * Hamdan Yuwafi Mastu Wijaya (NPM. 19081010092)
+ * Judul        : CRUD-C
+ * GitHub URL   : https://github.com/thisham/pemrograman-lanjut-2020/tree/master/T03_Struct
+ * Note         : Source code ini ditulis di Linux Ubuntu 18.04 dan dikompilasi dengan GCC for Linux.
+ */
+
 struct Mahasiswa
 {
     char npm[16];
